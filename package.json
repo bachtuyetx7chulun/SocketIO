@@ -1,25 +1,17 @@
 {
-  "name": "Socket-App",
+  "name": "socketApp",
   "version": "1.0.0",
+  "description": "This app using nodejs and reactjs to build ChatCord app",
   "main": "index.js",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "yarn workspace @app/backend dev"
+  },
   "repository": "https://github.com/bachtuyetx7chulun/SocketIO.git",
   "author": "bachtuyetx7chulun <contact.truongtrunghieu@gmail.com>",
   "license": "MIT",
-  "type": "module",
-  "scripts": {
-    "start": "node dist/index.js",
-    "dev": "nodemon src/index.js"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-list-endpoints": "^5.0.0",
-    "moment": "^2.29.1",
-    "socket.io": "^3.1.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+  "private": true
 }
