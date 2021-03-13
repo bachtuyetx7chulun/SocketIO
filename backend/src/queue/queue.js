@@ -1,13 +1,10 @@
-const { REDIS_HOST_NAME, REDIS_HOST_PORT } = require('../config')
+const { REDIS_NAME, REDIS_PORT } = require('../config')
 const Queue = require('bull')
 const jobs = require('./jobs')
 
 const queues = Object.values(jobs).map(job => {
   return {
-    bull: new Queue(
-      job.jobName,
-      `redis://${REDIS_HOST_NAME}:${REDIS_HOST_PORT}`
-    ),
+    bull: new Queue(job.jobName, `redis://${REDIS_NAME}:${REDIS_PORT}`),
     name: job.jobName,
     handle: job.jobHandle,
   }

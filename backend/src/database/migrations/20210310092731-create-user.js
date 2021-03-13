@@ -24,11 +24,11 @@ module.exports = {
       },
       googleId: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       facebookId: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       verifyToken: {
         type: Sequelize.STRING,

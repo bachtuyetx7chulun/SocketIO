@@ -4,7 +4,7 @@ const endPoints = require('express-list-endpoints')
 const helmet = require('helmet')
 const logger = require('morgan')
 const { getError, handleError } = require('../middlewares/error.middleware')
-const { DEV_HOST_PORT, GOOGLE_CLIENT_ID } = require('./index')
+const { HOST_PORT } = require('./index')
 
 module.exports = app => {
   app.use(cors())
@@ -12,7 +12,7 @@ module.exports = app => {
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(logger('dev'))
   app.use(helmet())
-  app.set('port', DEV_HOST_PORT || 5000)
+  app.set('port', HOST_PORT || 5000)
 
   app.get('/', (req, res, next) => {
     res.status(200).json({

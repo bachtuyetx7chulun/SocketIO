@@ -1,24 +1,26 @@
 require('dotenv/config.js')
 
 module.exports = {
-  DEV_DATABASE_NAME: process.env.DEV_DATABASE_NAME,
-  DEV_DATABASE_PORT: +process.env.DEV_DATABASE_PORT || 5432,
-  DEV_DATABASE_USERNAME: process.env.DEV_DATABASE_USERNAME || 'postgres',
-  DEV_DATABASE_PASSWORD: process.env.DEV_DATABASE_PASSWORD,
-  DEV_DATABASE_DIALECT: process.env.DEV_DATABASE_DIALECT || 'postgres',
+  ENV: process.env.ENV,
 
-  DEV_HOST_PORT: process.env.DEV_HOST_PORT,
-  DEV_HOST_NAME: process.env.DEV_HOST_NAME,
+  DATABASE_NAME: process.env.DATABASE_NAME,
+  DATABASE_PORT: +process.env.DATABASE_PORT || 5432,
+  DATABASE_USERNAME: process.env.DATABASE_USERNAME || 'postgres',
+  DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
+  DATABASE_DIALECT: process.env.DATABASE_DIALECT || 'postgres',
+
+  HOST_PORT: process.env.HOST_PORT,
+  HOST_NAME: process.env.HOST_NAME,
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
 
-  MAIL_HOST_NAME: process.env.MAIL_HOST_NAME,
-  MAIL_HOST_PORT: +process.env.MAIL_HOST_PORT || 587,
+  MAIL_NAME: process.env.MAIL_NAME,
+  MAIL_PORT: +process.env.MAIL_PORT || 587,
   MAIL_SECURE: process.env.MAIL_SECURE || false,
-  MAIL_AUTH_USERNAME: process.env.MAIL_AUTH_USERNAME,
-  MAIL_AUTH_PASSWORD: process.env.MAIL_AUTH_PASSWORD,
+  MAIL_USERNAME: process.env.MAIL_USERNAME,
+  MAIL_PASSWORD: process.env.MAIL_PASSWORD,
 
-  REDIS_HOST_NAME: process.env.REDIS_HOST_NAME || '127.0.0.1',
-  REDIS_HOST_PORT: +process.env.REDIS_HOST_PORT || 6379,
+  REDIS_NAME: process.env.REDIS_NAME || '127.0.0.1',
+  REDIS_PORT: +process.env.REDIS_PORT || 6379,
 }
