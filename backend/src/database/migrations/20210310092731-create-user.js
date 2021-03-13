@@ -5,7 +5,7 @@ module.exports = {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUID,
         allowNull: false,
         autoIncrement: false,
       },
@@ -18,6 +18,18 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
       },
+      type: {
+        type: Sequelize.ENUM('FACEBOOK', 'GOOGLE', 'LOCAL'),
+        defaultValue: 'LOCAL',
+      },
+      googleId: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      facebookId: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       verifyToken: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -29,6 +41,10 @@ module.exports = {
       },
       phone: {
         type: Sequelize.STRING,
+      },
+      role: {
+        type: Sequelize.ENUM('ADMIN', 'MANAGER', 'USER'),
+        defaultValue: 'USER',
       },
       createdAt: {
         allowNull: false,

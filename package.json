@@ -8,7 +8,10 @@
     "frontend"
   ],
   "scripts": {
-    "dev:backend": "yarn workspace @app/backend dev"
+    "dev:backend": "yarn workspace @app/backend dev",
+    "db:migrate": "yarn workspace @app/backend sequelize-cli db:migrate",
+    "db:create": "yarn workspace @app/backend sequelize-cli db:create",
+    "db:drop": "yarn workspace @app/backend sequelize-cli db:drop"
   },
   "repository": "https://github.com/bachtuyetx7chulun/SocketIO.git",
   "author": "bachtuyetx7chulun <contact.truongtrunghieu@gmail.com>",

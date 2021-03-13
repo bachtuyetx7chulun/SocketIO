@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv/config.js')
 
 module.exports = {
   DEV_DATABASE_NAME: process.env.DEV_DATABASE_NAME,
@@ -9,4 +9,16 @@ module.exports = {
 
   DEV_HOST_PORT: process.env.DEV_HOST_PORT,
   DEV_HOST_NAME: process.env.DEV_HOST_NAME,
+
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
+
+  MAIL_HOST_NAME: process.env.MAIL_HOST_NAME,
+  MAIL_HOST_PORT: +process.env.MAIL_HOST_PORT || 587,
+  MAIL_SECURE: process.env.MAIL_SECURE || false,
+  MAIL_AUTH_USERNAME: process.env.MAIL_AUTH_USERNAME,
+  MAIL_AUTH_PASSWORD: process.env.MAIL_AUTH_PASSWORD,
+
+  REDIS_HOST_NAME: process.env.REDIS_HOST_NAME || '127.0.0.1',
+  REDIS_HOST_PORT: +process.env.REDIS_HOST_PORT || 6379,
 }
