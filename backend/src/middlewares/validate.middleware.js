@@ -5,6 +5,7 @@ const userSchema = Joi.object({
   password: Joi.string().required().min(6),
   phone: Joi.number().min(10).max(11),
   email: Joi.string().email().required(),
+  fullName: Joi.string().min(6).required(),
 })
 
 const validateForm = schema => {

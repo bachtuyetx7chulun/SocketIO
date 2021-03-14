@@ -22,6 +22,14 @@ module.exports = {
         type: Sequelize.ENUM('FACEBOOK', 'GOOGLE', 'LOCAL'),
         defaultValue: 'LOCAL',
       },
+      avatar: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      fullName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       googleId: {
         type: Sequelize.STRING,
         allowNull: true,

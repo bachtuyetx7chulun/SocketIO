@@ -36,13 +36,14 @@ const getUserById = async (req, res, next) => {
 // TODO: Url: api/v1/users/
 // *   : Create a new user with random ID and verifyToken
 const createUser = async (req, res, next) => {
-  const { username, email, password } = req.body
+  const { username, email, password, fullName } = req.body
   const user = await User.create({
     id: uuidv4(),
     username,
     email,
     password: hashPassword(password),
     verifyToken: uuidv4(),
+    fullName,
   })
 
   return res.status(201).json({
@@ -60,6 +61,7 @@ const sendMailToUser = async (req, res, next) => {
     where: {
       username,
       password: hPass,
+      type: 'LOCAL',
     },
   })
   if (!user) return next(new Error('User or password is incorrect'))
@@ -129,8 +131,7 @@ const createSocialUser = async (req, res, next) => {
 const handleCallback = async (req, res, next) => {
   const code = req.query.code
   if (code) {
-    const result = await getGoogleAccountFromCode(code)
-
+    const { id, email, name, picture } = await getGoogleAccountFromCode(code)
     // * "id": "105653090404758515636",
     // * "email": "savefileofme@gmail.com",
     // * "verified_email": true,
@@ -139,10 +140,33 @@ const handleCallback = async (req, res, next) => {
     // * "family_name": "Lưu",
     // * "picture": "https://lh3.googleusercontent.com/a-/AOh14GgC90PA41EZQCos8LOXroluic899P3nmAM7lAZT=s96-c",
     // * "locale": "vi"
-    const user = await User.create({})
+    const user = await User.findOne({
+      where: {
+        email,
+        googleId: id,
+        type: 'GOOGLE',
+      },
+    })
 
-    return res.json({
-      data: result,
+    if (!user) {
+      const userField = await User.create({
+        id: uuidv4(),
+        googleId: id,
+        email,
+        fullName: name,
+        avatar: picture,
+        type: 'GOOGLE',
+        active: true,
+      })
+
+      return res.json({
+        message: userField,
+        code: 201,
+      })
+    }
+
+    return res.status(200).json({
+      data: user,
       code: 200,
     })
   }
