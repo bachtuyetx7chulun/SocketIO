@@ -23,4 +23,7 @@ module.exports = {
 
   REDIS_NAME: process.env.REDIS_NAME || '127.0.0.1',
   REDIS_PORT: +process.env.REDIS_PORT || 6379,
+
+  JWT_ACCESS_KEY: process.env.JWT_ACCESS_KEY,
+  JWT_REFRESH_KEY: process.env.JWT_REFRESH_KEY,
 }

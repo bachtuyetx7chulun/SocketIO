@@ -21,7 +21,6 @@ module.exports = {
   jobHandle: async data => {
     try {
       const { email, verifyToken, username } = data
-      console.log(data);
       let transporter = nodemailer.createTransport(configs)
 
       let info = await transporter.sendMail({

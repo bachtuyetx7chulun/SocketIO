@@ -4,7 +4,7 @@ const endPoints = require('express-list-endpoints')
 const helmet = require('helmet')
 const logger = require('morgan')
 const { getError, handleError } = require('../middlewares/error.middleware')
-const { HOST_PORT } = require('./index')
+const { HOST_PORT, ENV } = require('./index')
 
 module.exports = app => {
   app.use(cors())
@@ -27,6 +27,7 @@ module.exports = app => {
   app.use(handleError)
 
   app.listen(app.get('port'), () => {
+    console.log(`Environment: ${ENV}`)
     console.log(`Server is running on port ${app.get('port')}`)
     console.log(`See more on http://localhost:5000`)
     console.table(endPoints(app))

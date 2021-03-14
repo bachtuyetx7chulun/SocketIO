@@ -4,6 +4,7 @@ const Queue = require('../queue/queue')
 const { urlGoogle, getGoogleAccountFromCode } = require('../utils/google.uitl')
 const { comparePassword, hashPassword } = require('../utils/password.util')
 const jobNames = require('../config/job')
+const { or } = require('sequelize')
 
 // TODO: Method: Get
 // TODO: Url: api/v1/users/
@@ -37,6 +38,16 @@ const getUserById = async (req, res, next) => {
 // *   : Create a new user with random ID and verifyToken
 const createUser = async (req, res, next) => {
   const { username, email, password, fullName } = req.body
+  const userExist = await User.findOne({
+    where: or(
+      {
+        username,
+      },
+      { email }
+    ),
+  })
+  if (userExist) return next(new Error('User or email is exist'))
+
   const user = await User.create({
     id: uuidv4(),
     username,
@@ -45,9 +56,16 @@ const createUser = async (req, res, next) => {
     verifyToken: uuidv4(),
     fullName,
   })
+  if (user) {
+    Queue.add(jobNames.ActiveUser.jobName, {
+      username: user.getDataValue('username'),
+      email: user.getDataValue('email'),
+      verifyToken: user.getDataValue('verifyToken'),
+    })
+  }
 
   return res.status(201).json({
-    message: ` created user`,
+    message: ` created user, check you mail to active account`,
     code: 201,
   })
 }
@@ -115,10 +133,12 @@ const activeUser = async (req, res, next) => {
   )
   if (user[0] === 0) return next(new Error('Not found'))
 
-  return res.status(200).json({
-    message: 'Actived',
-    code: 200,
-  })
+  // return res.status(200).json({
+  //   message: 'Actived',
+  //   code: 200,
+  // })
+
+  return res.redirect('https://google.com.vn')
 }
 
 const createSocialUser = async (req, res, next) => {
@@ -132,14 +152,6 @@ const handleCallback = async (req, res, next) => {
   const code = req.query.code
   if (code) {
     const { id, email, name, picture } = await getGoogleAccountFromCode(code)
-    // * "id": "105653090404758515636",
-    // * "email": "savefileofme@gmail.com",
-    // * "verified_email": true,
-    // * "name": "Trữ Lưu",
-    // * "given_name": "Trữ",
-    // * "family_name": "Lưu",
-    // * "picture": "https://lh3.googleusercontent.com/a-/AOh14GgC90PA41EZQCos8LOXroluic899P3nmAM7lAZT=s96-c",
-    // * "locale": "vi"
     const user = await User.findOne({
       where: {
         email,
