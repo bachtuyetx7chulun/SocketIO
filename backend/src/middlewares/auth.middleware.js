@@ -1,12 +1,19 @@
 const jwt = require('jwt-then')
+const { verifyToken } = require('../utils/token.util')
 
-const authorization = (req, res, next) => {
+const authorization = async (req, res, next) => {
   try {
-    const token = req.get('access_token')
-      
+    const access_token = req.get('access_token')
+    // const refresh_token = req.get('refres_token') // Deprecated
+    const payload = await verifyToken(access_token)
+
+    req.payload = payload
     return next()
   } catch (error) {
-    return next(error)
+    return res.status(403).json({
+      message: 'Forbidden',
+      code: 403,
+    })
   }
 }
 

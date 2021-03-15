@@ -32,4 +32,7 @@ module.exports = app => {
     console.log(`See more on http://localhost:5000`)
     console.table(endPoints(app))
   })
+
+  const  io,{Server } = require('socket.io')
+  const server =  
 }

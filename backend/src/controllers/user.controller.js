@@ -5,7 +5,8 @@ const { urlGoogle, getGoogleAccountFromCode } = require('../utils/google.uitl')
 const { comparePassword, hashPassword } = require('../utils/password.util')
 const jobNames = require('../config/job')
 const { or } = require('sequelize')
-
+const jwt = require('jwt-then')
+const { generateTokens } = require('../utils/token.util')
 // TODO: Method: Get
 // TODO: Url: api/v1/users/
 // *   : Get all users from database
@@ -133,11 +134,6 @@ const activeUser = async (req, res, next) => {
   )
   if (user[0] === 0) return next(new Error('Not found'))
 
-  // return res.status(200).json({
-  //   message: 'Actived',
-  //   code: 200,
-  // })
-
   return res.redirect('https://google.com.vn')
 }
 
@@ -184,6 +180,30 @@ const handleCallback = async (req, res, next) => {
   }
 }
 
+const userLogin = async (req, res, next) => {
+  const { username, password } = req.body
+  const hPass = hashPassword(password)
+  const user = await User.findOne({
+    where: {
+      username,
+      password: hPass,
+      type: 'LOCAL',
+    },
+  })
+
+  if (!user) return next(new Error('User or password is incorrect'))
+  const tokens = await generateTokens({
+    id: user.id,
+    username,
+    type: user.type,
+  })
+
+  return res.status(200).json({
+    data: tokens,
+    code: 200,
+  })
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -194,4 +214,5 @@ module.exports = {
   createSocialUser,
   handleCallback,
   sendMailToUser,
+  userLogin,
 }
