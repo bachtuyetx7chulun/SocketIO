@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 
 function RoomPage(props) {
   const socket = io('http://localhost:5000', {
+    transports: ['websocket'],
     query: {
       token: Cookies.get('access_token'),
     },
