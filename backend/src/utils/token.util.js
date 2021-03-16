@@ -9,7 +9,7 @@ const generateTokens = async payload => {
     },
     JWT_ACCESS_KEY,
     {
-      expiresIn: '1h',
+      expiresIn: '24h',
     }
   )
   const refresh_token = await jwt.sign(

@@ -3,17 +3,29 @@ const {
   MAIL_USERNAME,
   MAIL_NAME,
   MAIL_PORT,
-  HOST_NAME,
+  MAIL_PROVIDER,
 } = require('../../../config/index')
 const nodemailer = require('nodemailer')
-const configs = {
-  host: MAIL_NAME,
-  port: MAIL_PORT,
-  secure: false,
-  auth: {
-    user: MAIL_USERNAME,
-    pass: MAIL_PASSWORD,
-  },
+let configs = {}
+if (MAIL_PROVIDER === 'mailtrap') {
+  configs = {
+    host: MAIL_NAME,
+    port: MAIL_PORT,
+    auth: {
+      user: MAIL_USERNAME,
+      pass: MAIL_PASSWORD,
+    },
+  }
+} else {
+  configs = {
+    host: MAIL_NAME,
+    port: MAIL_PORT,
+    secure: false,
+    auth: {
+      user: MAIL_USERNAME,
+      pass: MAIL_PASSWORD,
+    },
+  }
 }
 
 module.exports = {

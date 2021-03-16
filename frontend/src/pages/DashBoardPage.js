@@ -1,19 +1,27 @@
-import React, { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useHistory, withRouter } from 'react-router-dom'
 import Cookies from 'js-cookie'
-
+import axios from 'axios'
 
 function DashBoardPage(props) {
-  console.log(props)
+  const [rooms, setRooms] = useState([])
   const history = useHistory()
-  const isLogin = props.location.state?.login
+
   useEffect(() => {
     const checkLogin = () => {
-      if (!isLogin) return history.push('/login')
+      if (!Cookies.get('AS') && !Cookies.get('RS'))
+        return history.push('/login')
     }
 
+    const getRooms = async () => {
+      const { data } = await axios.get('http://localhost:5000/rooms')
+      setRooms(data.rooms)
+    }
+
+    getRooms()
     checkLogin()
   }, [history])
+
 
   return (
     <div className="join-container">
@@ -23,35 +31,63 @@ function DashBoardPage(props) {
         </h1>
       </header>
       <main className="join-main">
-        <form action="chat.html">
+        <div>
           <div className="form-control">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Create new room</label>
             <input
               type="text"
               name="username"
               id="username"
-              placeholder="Enter username..."
-              required
+              placeholder="Enter room name ..."
             />
+            <button type="submit" className="btn">
+              Create
+            </button>
           </div>
-          <div className="form-control">
-            <label htmlFor="room">Room</label>
-            <select name="room" id="room">
-              <option value="JavaScript">JavaScript</option>
-              <option value="Python">Python</option>
-              <option value="PHP">PHP</option>
-              <option value="C#">C#</option>
-              <option value="Ruby">Ruby</option>
-              <option value="Java">Java</option>
-            </select>
+        </div>
+      </main>
+      <main
+        style={{ backgroundColor: 'whitesmoke', color: '#7386ff' }}
+        className="join-main"
+      >
+        <div className="form-control">
+          <label style={{ fontWeight: 'bold' }} htmlFor="room">
+            Rooms
+          </label>
+          <div className="rooms">
+            {rooms.map(room => {
+              return (
+                <div
+                  key={room.id}
+                  className="room"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    backgroundColor: '#7386ff',
+                    padding: '10px',
+                    marginBottom: '5px',
+                  }}
+                >
+                  <span style={{ color: '#f1f1f1' }}>{room.roomName}</span>
+                  <Link to={'/room/' + room.id}>
+                    <button
+                      style={{
+                        padding: '5px',
+                        border: 'none',
+                        color: '#7386ff',
+                      }}
+                    >
+                      Join
+                    </button>
+                  </Link>
+                </div>
+              )
+            })}
           </div>
-          <button type="submit" className="btn">
-            Join Chat
-          </button>
-        </form>
+        </div>
       </main>
     </div>
   )
 }
 
-export default DashBoardPage
+export default withRouter(DashBoardPage)

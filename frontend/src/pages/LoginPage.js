@@ -1,14 +1,23 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, withRouter } from 'react-router-dom'
 
-function LoginPage() {
+function LoginPage(props) {
   const history = useHistory()
   const [username, setUsername] = useState('emvaodoi')
   const [password, setPassword] = useState('Th@tisl0ve')
+
+  // * Using with useRef
+  // const usernameRef = useRef()
+  // const passwordRef = useRef()
   const onSubmit = async e => {
     e.preventDefault()
+
+    // * using with useRef
+    // const username = usernameRef.current.value
+    // const password = passwordRef.current.value
+
     try {
       const { data } = await axios.post('http://localhost:5000/users/login', {
         username,
@@ -28,7 +37,8 @@ function LoginPage() {
         expires: 7,
       })
 
-      history.push('/dashboard', { login: true })
+      history.push('/dashboard')
+      props.setupSocket()
     } catch (error) {
       console.log(error)
     }
@@ -87,4 +97,4 @@ function LoginPage() {
   )
 }
 
-export default LoginPage
+export default withRouter(LoginPage)

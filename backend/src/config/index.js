@@ -1,4 +1,4 @@
-require('dotenv/config.js')
+require('dotenv').config()
 
 module.exports = {
   ENV: process.env.ENV,
@@ -15,7 +15,8 @@ module.exports = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
 
-  MAIL_NAME: process.env.MAIL_NAME,
+  MAIL_PROVIDER: process.env.MAIL_PROVIDER,
+  MAIL_NAME: process.env.MAIL_NAME || 'smtp.google.com',
   MAIL_PORT: +process.env.MAIL_PORT || 587,
   MAIL_SECURE: process.env.MAIL_SECURE || false,
   MAIL_USERNAME: process.env.MAIL_USERNAME,

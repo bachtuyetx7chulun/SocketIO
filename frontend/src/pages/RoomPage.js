@@ -1,15 +1,51 @@
-import React from 'react'
-import io from 'socket.io-client'
-import Cookies from 'js-cookie'
+import React, { useEffect, useRef, useState } from 'react'
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 function RoomPage(props) {
-  const socket = io('http://localhost:5000', {
-    transports: ['websocket'],
-    query: {
-      token: Cookies.get('access_token'),
-    },
-  })
-  const roomId = props.match
+  const [messages, setMessages] = useState([])
+  const messageRef = useRef()
+  const sendMessage = e => {
+    e.preventDefault()
+    if (props.socket) {
+      props.socket?.emit('roomMessages', {
+        roomId,
+        message: messageRef.current.value,
+      })
+
+      messageRef.current.value = ''
+    }
+  }
+  const roomId = props.match.params.id
+  useEffect(() => {
+    const getMessageRoom = async () => {
+      const { data } = await axios.get(`http://localhost:5000/rooms/${roomId}`)
+      if (data) {
+        setMessages(data.chats)
+      }
+    }
+
+    if (props.socket) {
+      props.socket.emit('joinRoom', {
+        roomId,
+      })
+
+      props.socket.on('newMessage', message => {
+        const newMessages = [...messages, message]
+        setMessages(newMessages)
+      })
+    }
+
+    return () => {
+      props.socket?.emit('leaveRoom', {
+        roomId,
+      })
+      getMessageRoom()
+    }
+  }, [props.socket, roomId])
+
+  console.log(messages)
 
   return (
     <div className="chat-container">
@@ -17,9 +53,9 @@ function RoomPage(props) {
         <h1>
           <i className="fas fa-smile"></i> ChatCord
         </h1>
-        <a href="/public/index.html" id="leave-btn" className="btn">
+        <Link to="/dashboard" id="leave-btn" className="btn">
           Leave Room
-        </a>
+        </Link>
       </header>
       <main className="chat-main">
         <div className="chat-sidebar">
@@ -32,7 +68,16 @@ function RoomPage(props) {
           </h3>
           <ul id="users"></ul>
         </div>
-        <div className="chat-messages"></div>
+        <div className="chat-messages">
+          {messages.map((message, index) => {
+            return (
+              <div key={index} className="message">
+                <p className="meta">{message.name}</p>
+                <p className="text">{message.message}</p>
+              </div>
+            )
+          })}
+        </div>
       </main>
       <div className="chat-form-container">
         <form id="chat-form">
@@ -42,8 +87,9 @@ function RoomPage(props) {
             placeholder="Enter Message"
             required
             autoComplete="off"
+            ref={messageRef}
           />
-          <button className="btn">
+          <button className="btn" onClick={sendMessage} type="button">
             <i className="fas fa-paper-plane"></i> Send
           </button>
         </form>
@@ -52,4 +98,4 @@ function RoomPage(props) {
   )
 }
 
-export default RoomPage
+export default withRouter(RoomPage)

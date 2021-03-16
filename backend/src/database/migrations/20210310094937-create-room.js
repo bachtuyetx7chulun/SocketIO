@@ -9,21 +9,21 @@ module.exports = {
         allowNull: false,
         autoIncrement: false,
       },
-      roomOwner: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
-      roomType: {
-        type: Sequelize.ENUM('PRIVATE', 'PUBLIC'),
-        defaultValue: 'PUBLIC',
-      },
-      roomKey: {
-        type: Sequelize.STRING,
-      },
+      // roomOwner: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      //   references: {
+      //     model: 'Users',
+      //     key: 'id',
+      //   },
+      // },
+      // roomType: {
+      //   type: Sequelize.ENUM('PRIVATE', 'PUBLIC'),
+      //   defaultValue: 'PUBLIC',
+      // },
+      // roomKey: {
+      //   type: Sequelize.STRING,
+      // },
       roomName: {
         type: Sequelize.STRING,
       },

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.Message, { foreignKey: 'room', as: 'messages' })
-      this.belongsTo(models.User, { foreignKey: 'roomOwner', as: 'room' })
+      // this.belongsTo(models.User, { foreignKey: 'roomOwner', as: 'room' })
       this.belongsToMany(models.User, {
         foreignKey: 'room_id',
         through: 'Users_Rooms',
@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       roomName: DataTypes.STRING,
       roomLimit: DataTypes.INTEGER,
-      roomKey: DataTypes.STRING,
-      roomType: DataTypes.STRING,
-      roomOwner: DataTypes.STRING,
+      // roomKey: DataTypes.STRING,
+      // roomType: DataTypes.STRING,
+      // roomOwner: DataTypes.STRING,
     },
     {
       sequelize,

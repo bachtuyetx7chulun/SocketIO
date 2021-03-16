@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router'
 export const IndexPage = () => {
-
-  return <div>
-      123123
-  </div>
+  
+  const history = useHistory()
+  useEffect(() => {
+    history.push('/dashboard')
+    return () => {}
+  }, [history])
+  return <div></div>
 }
